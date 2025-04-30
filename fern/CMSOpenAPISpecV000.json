@@ -1,0 +1,511 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "CMS API Service",
+        "version": "0.0"
+    },
+    "servers": [
+        {
+            "url": "http://dev.jasperedi.services:8077/rest/v0/cms"
+        }
+    ],
+    "tags": [
+        {
+            "name": "EligibilityInquiry"
+        },
+        {
+            "name": "EligibilityResponse"
+        }
+    ],
+    "paths": {
+        "/EligibilityInquiry": {
+            "post": {
+                "tags": [
+                    "EligibilityInquiry"
+                ],
+                "summary": "Medicare OB Process [MAIN]",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EligibilityInquiryRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/default"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "522": {
+                        "$ref": "#/components/responses/522"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "413": {
+                        "$ref": "#/components/responses/413"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                }
+            }
+        },
+        "/EligibilityResponse": {
+            "get": {
+                "tags": [
+                    "EligibilityResponse"
+                ],
+                "summary": "Get Document by ID",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EligibilityResponseResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/default"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/400"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "522": {
+                        "$ref": "#/components/responses/522"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "413": {
+                        "$ref": "#/components/responses/413"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "EligibilityInquiryRequest": {
+                "required": [
+                    "Detail",
+                    "Header"
+                ],
+                "type": "object",
+                "properties": {
+                    "Detail": {
+                        "required": [
+                            "ResponsibleReportingEntity",
+                            "Subscriber"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "Reference": {
+                                "oneOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "maxLength": 2,
+                                        "minLength": 2,
+                                        "type": "string",
+                                        "enum": [
+                                            "IG",
+                                            "NQ",
+                                            "EA"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "ResponsibleReportingEntity": {
+                                "maxLength": 9,
+                                "minLength": 9,
+                                "type": "string",
+                                "description": "9-digit Responsible\nReporting Entity (RRE)\nnumber assigned by\nCOB.\nThe RRE number must\ncontain 9 digits.\nPopulate leading\npositions with zeros."
+                            },
+                            "Subscriber": {
+                                "required": [
+                                    "Birthdate",
+                                    "FirstName",
+                                    "Gender",
+                                    "LastName",
+                                    "MedicareIDMember’s Medicare ID (HICN or MBI)"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "Birthdate": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "FirstName": {
+                                        "type": "string"
+                                    },
+                                    "Gender": {
+                                        "maxLength": 1,
+                                        "minLength": 1,
+                                        "type": "string",
+                                        "enum": [
+                                            "M",
+                                            "F"
+                                        ]
+                                    },
+                                    "LastName": {
+                                        "type": "string"
+                                    },
+                                    "MedicareIDMember’s Medicare ID (HICN or MBI)": {
+                                        "type": "string",
+                                        "description": "Member’s Medicare ID\n(HICN or MBI)"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Header": {
+                        "type": "object",
+                        "properties": {
+                            "CreatedDateTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    },
+                    "Meta": {
+                        "type": "object",
+                        "properties": {
+                            "ReceivedDateTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "Settings": {
+                                "type": "object",
+                                "properties": {
+                                    "favorite": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "imported": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "readunread": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "Tags": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "source": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "EligibilityResponseResponse": {
+                "required": [
+                    "Detail",
+                    "Header"
+                ],
+                "type": "object",
+                "properties": {
+                    "Detail": {
+                        "required": [
+                            "ResponsibleReportingEntity",
+                            "Subscriber"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "OriginatingCompanyID": {
+                                "type": "number",
+                                "description": "The number ‘9’ plus the\nRRE number. The RRE\nnumber must contain 9\ndigits. Populate leading\npositions with zeros.",
+                                "format": "double"
+                            },
+                            "PlanEligibilitys": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "EndDate": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "MedicarePart": {
+                                            "type": "string",
+                                            "enum": [
+                                                "A",
+                                                "B",
+                                                "C"
+                                            ]
+                                        },
+                                        "PartC": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ContractNumber": {
+                                                    "type": "string"
+                                                },
+                                                "PBPNumber": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "StartDate": {
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                    }
+                                }
+                            },
+                            "References": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "RefQual": {
+                                            "maxLength": 2,
+                                            "minLength": 2,
+                                            "type": "string",
+                                            "enum": [
+                                                "IG",
+                                                "NQ",
+                                                "EA"
+                                            ]
+                                        },
+                                        "Reference": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "RejectionReason": {
+                                "type": "string",
+                                "enum": [
+                                    "Subscriber or Insured not found",
+                                    "Duplicate Subscriber or Insured ID"
+                                ]
+                            },
+                            "ResponsibleReportingEntity": {
+                                "maxLength": 9,
+                                "minLength": 9,
+                                "type": "string",
+                                "description": "9-digit Responsible\nReporting Entity (RRE)\nnumber assigned by\nCOB.\nThe RRE number must\ncontain 9 digits.\nPopulate leading\npositions with zeros."
+                            },
+                            "Subscriber": {
+                                "required": [
+                                    "Birthdate",
+                                    "FirstName",
+                                    "Gender",
+                                    "LastName",
+                                    "MedicareID"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "Birthdate": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "FirstName": {
+                                        "type": "string"
+                                    },
+                                    "Gender": {
+                                        "maxLength": 1,
+                                        "minLength": 1,
+                                        "type": "string",
+                                        "enum": [
+                                            "M",
+                                            "F"
+                                        ]
+                                    },
+                                    "LastName": {
+                                        "type": "string"
+                                    },
+                                    "MedicareID": {
+                                        "type": "string",
+                                        "description": "Member’s Medicare ID\n(HICN or MBI)"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Header": {
+                        "type": "object",
+                        "properties": {
+                            "CreatedDateTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    },
+                    "Meta": {
+                        "type": "object",
+                        "properties": {
+                            "ReceivedDateTime": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "Settings": {
+                                "type": "object",
+                                "properties": {
+                                    "favorite": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "imported": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "readunread": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "Tags": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "source": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "default": {
+                "description": "Unidentified Exception",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Bad Request - There are miscellaneous errors with the request, for example, mismatches between the request and what is allowed for the operation.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "500": {
+                "description": "Internal Server Error - This generic error message appears when an unexpected condition was encountered and a more specific message is not suitable.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "522": {
+                "description": "Connection Timed Out - This message is returned to the client when the SOA Worker Maximum Execution Time has been exceeded.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "Unauthorized or 403 Forbidden - Authentication errors.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "413": {
+                "description": "Request Entity Too Large - The request data was too large. This is based on the SOA Input Size quota.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Not Found - Invalid URL path.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "503": {
+                "description": "Service Unavailable - The caller has hit a throttle or the request was rejected because the Atom is starting or stopping.",
+                "content": {
+                    "text/html": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "X-API-Key": {
+                "type": "apiKey",
+                "name": "X-API-Key",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "X-API-Key": []
+        }
+    ]
+}
